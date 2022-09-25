@@ -1,0 +1,85 @@
+<form class="example-form" [formGroup]="userForm" (submit)="onSubmitForm(userForm)">
+  <div>
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>My Trip</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="primary-container">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Enter trip name"
+              formControlName="tripName"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              #inputRef
+              placeholder="Enter number of members"
+              formControlName="noOfMembers"
+              (blur)="addAddress(inputRef)"
+            />
+          </mat-form-field>
+        </div>
+        <div formArrayName="members">
+          <div
+            class="members-container"
+            *ngFor="let group of membersArray.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <fieldset>
+              <legend>
+                <h3>Members: {{ i + 1 }}</h3>
+              </legend>
+              <div>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Enter member name"
+                    formControlName="name"
+                  />
+                </mat-form-field>
+              </div>
+              <div formArrayName="expense">
+                <div
+                  *ngFor="
+                    let subgroup of group.controls.expense.controls;
+                    let idx = index
+                  "
+                  [formGroupName]="idx"
+                >
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="Enter expense name"
+                      formControlName="expenseTitle"
+                    />
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="Enter amount"
+                      formControlName="amount"
+                    />
+                  </mat-form-field>
+                </div>
+                <button type="button" mat-raised-button (click)="addContact(i)">
+                  Add more expense
+                </button>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <!-- <div class="form-row org-desc-parent-margin">
+          <button mat-raised-button (click)="addAddress()">
+            Add more members
+          </button>
+        </div> -->
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <button type="submit" mat-raised-button>Submit</button>
+</form>
